@@ -1,0 +1,96 @@
+{
+  "id": "demo-support-agent",
+  "name": "Support Agent Returned Wrong Refund Policy",
+  "description": "A customer support RAG agent gave outdated refund policy guidance after a docs deployment and stale vector index.",
+  "events": [
+    {
+      "id": "evt-001",
+      "incident_id": "demo-support-agent",
+      "timestamp": "2026-06-15T08:02:00Z",
+      "type": "deploy",
+      "service": "docs-pipeline",
+      "severity": "info",
+      "title": "Refund policy docs updated",
+      "details": "The public refund policy changed from 30 days to 14 days.",
+      "attributes": {
+        "commit": "8fd21ab",
+        "owner": "docs"
+      }
+    },
+    {
+      "id": "evt-002",
+      "incident_id": "demo-support-agent",
+      "timestamp": "2026-06-15T08:04:00Z",
+      "type": "metric",
+      "service": "embedding-worker",
+      "severity": "warning",
+      "title": "Embedding refresh failed",
+      "details": "The document update was not embedded because the worker hit a rate limit.",
+      "attributes": {
+        "error": "rate_limit",
+        "retry_count": 3
+      }
+    },
+    {
+      "id": "evt-003",
+      "incident_id": "demo-support-agent",
+      "timestamp": "2026-06-15T09:18:00Z",
+      "type": "retrieval",
+      "service": "rag-api",
+      "severity": "warning",
+      "title": "Stale refund policy chunk retrieved",
+      "details": "Top retrieved chunk still says customers can request refunds within 30 days.",
+      "attributes": {
+        "query": "refund after purchase",
+        "top_score": 0.91,
+        "chunk_version": "2026-05-28",
+        "source_version": "2026-06-15",
+        "stale": true
+      }
+    },
+    {
+      "id": "evt-004",
+      "incident_id": "demo-support-agent",
+      "timestamp": "2026-06-15T09:18:02Z",
+      "type": "model_call",
+      "service": "support-agent",
+      "severity": "error",
+      "title": "Model generated outdated policy answer",
+      "details": "The assistant told the customer the refund window is 30 days.",
+      "attributes": {
+        "model": "gpt-4.1-mini",
+        "prompt_version": "support-agent-v42",
+        "latency_ms": 1740
+      }
+    },
+    {
+      "id": "evt-005",
+      "incident_id": "demo-support-agent",
+      "timestamp": "2026-06-15T09:19:33Z",
+      "type": "user_feedback",
+      "service": "support-ui",
+      "severity": "error",
+      "title": "Customer marked answer incorrect",
+      "details": "The customer cited the new 14-day policy page.",
+      "attributes": {
+        "rating": "thumbs_down",
+        "conversation_id": "conv_923"
+      }
+    },
+    {
+      "id": "evt-006",
+      "incident_id": "demo-support-agent",
+      "timestamp": "2026-06-15T09:31:00Z",
+      "type": "eval",
+      "service": "eval-runner",
+      "severity": "error",
+      "title": "Refund policy eval failed",
+      "details": "Regression eval expected 14 days but received 30 days.",
+      "attributes": {
+        "eval_id": "refund_policy_currentness",
+        "expected": "14 days",
+        "actual": "30 days"
+      }
+    }
+  ]
+}
