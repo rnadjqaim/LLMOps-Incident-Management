@@ -4,13 +4,6 @@ from fastapi.middleware.cors import CORSMiddleware
 from llmops_incident.models import (
     DemoPredictionRequest,
     DemoPredictionResponse,
-    Incident,
-    ModelConnectionReport,
-    ModelConnectionRequest,
-    Severity,
-    TelemetryEvent,
-    TelemetryIngestResult,
-    TimelineReport,
 )
 from llmops_incident.repository import IncidentRepository
 from llmops_incident.timeline import build_timeline
